@@ -8,8 +8,7 @@ This project is a simple React application that demonstrates the use of React Ro
 - **React Router**: A collection of navigational components that compose declaratively with your application.
 - **Tailwind CSS**: A utility-first CSS framework for rapid UI development.
 - **Vite**: A fast build tool and development server.
-- **JavaScript (ES6+)**: The programming language used to develop the application.
-- **HTML5 & CSS3**: For structuring and styling the web pages.
+- **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
 
 ## Project Structure
 
