@@ -1,5 +1,6 @@
 import About from "../about/About";
 import Header from "../header/Header";
+import Footer from "../footer/Footer";
 
 const Home = () => {
   return (
@@ -8,6 +9,7 @@ const Home = () => {
       <div className="mt-[500px] ">
         <About />
       </div>
+      <Footer/>
     </div>
   );
 };

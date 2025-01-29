@@ -43,7 +43,7 @@ const Header: React.FC = () => {
             </p>
 
             {/* Call-to-Action Button */}
-            <button className="bg-pink-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-pink-600">
+            <button className="btn bg-pink-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-pink-600">
               Learn More
             </button>
           </div>
@@ -75,7 +75,7 @@ const Header: React.FC = () => {
                 <span>&gt;</span>
               </button>
             </div>
-            <button className="px-6 py-3 bg-pink-500 text-white font-medium rounded-lg hover:bg-pink-600 mb-5 text-lg">
+            <button className="btn bg-pink-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-pink-600">
               REGISTER
             </button>
             <p className="text-gray-600 text-base mb-4">
