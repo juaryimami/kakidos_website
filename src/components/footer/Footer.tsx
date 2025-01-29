@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#d73f6d] py-16">
+    <footer className="bg-[#E2426C] py-16">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-8">
         
         {/* Hexagon Container (Left) */}
@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
 
 const Hexagon: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => {
   return (
-    <div className="relative w-[200px] h-[230px] flex items-center justify-center text-center">
+    <div className="relative w-[200px] h-[300px] flex items-center justify-center text-center">
       <div className="w-full h-full bg-[#112c4a] text-white flex flex-col items-center justify-center px-4 py-6
                       clip-hexagon shadow-lg border-[3px] border-white">
         <p className="text-sm italic">{subtitle}</p>

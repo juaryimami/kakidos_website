@@ -1,6 +1,6 @@
 const About = () => {
   return (
-    <section className="bg-[#0F172A] text-white  py-16 px-8 w-12/12 mx-auto">
+    <section className="bg-[#182F49] text-white  py-16 px-8 w-12/12 mx-auto">
       <div className="container mx-auto flex flex-col lg:flex-row items-center lg:items-start">
         {/* Left Section */}
         <div className="lg:w-1/2 mb-8 lg:mb-0 p-9">
