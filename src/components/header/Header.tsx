@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import Logo from "../../assets/Focus TC Logo - Stacked (Dark BG, Light Text).svg";
+import Logo from "../../assets/Focus TC Logo - Icon (No BG, Dark) (1).png";
+import logof from "../../assets/Focus TC - Wordmark (Light).png"
 
 const Header: React.FC = () => {
   return (
@@ -52,7 +53,9 @@ const Header: React.FC = () => {
 </div>
         </div>
         <div className="bg-[#182F49] w-2/12 h-full">
-          <div className="bg-[#182F49]  h-full"></div>
+          <div className="bg-[#182F49] items-center  h-full flex justify-center items-center">
+            <img src={logof} alt="SVG Image" className="w-full h-full object-contain mx-4" />
+          </div>
           <div className="bg-[#182F49]  h-full"></div>
           <div className="bg-[#182F49]  h-full"></div>
           <div className="bg-[#182F49]  h-full"></div>
