@@ -1,3 +1,35 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer utilities {
+  .clip-hexagon {
+    clip-path: polygon(
+      50% 0%,   /* Top point */
+      100% 25%, /* Top right */
+      100% 75%, /* Bottom right */
+      50% 100%, /* Bottom point */
+      0% 75%,   /* Bottom left */
+      0% 25%    /* Top left */
+    );
+  }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+.btn {
+  display:inline-block;
+  position: relative;
+  font-family: 'Roboto';
+  font-weight: 500;
+  text-decoration: none;
+  text-transform: uppercase;
+  padding: 15px 50px;
+  text-align: center;
+  clip-path: polygon(14% 0, 86% 0, 100% 50%, 86% 100%, 14% 100%, 0 50%);
+  background-repeat: no-repeat;
+  transition: background-position-y ease-in-out 250ms;
+}
+.polygonal {
+clip-path: polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0% 50%);
+}
+
