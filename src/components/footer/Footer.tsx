@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
         {/* Title Section (Right) */}
         <div className="md:w-1/3 text-white text-right mt-8 md:mt-0">
           <h2 className="text-2xl font-bold mb-4">What makes us different?</h2>
-          <h3 className="text-3xl font-extrabold">Our unique Plans & Offerings</h3>
+          <h3 className="text-3xl text-[#182F49] font-extrabold">Our unique Plans & Offerings</h3>
         </div>
 
       </div>
@@ -27,7 +27,7 @@ const Hexagon: React.FC<{ title: string; subtitle: string }> = ({ title, subtitl
   return (
     <div className="relative w-[200px] h-[300px] flex items-center justify-center text-center">
       <div className="w-full h-full bg-[#112c4a] text-white flex flex-col items-center justify-center px-4 py-6
-                      clip-hexagon shadow-lg border-[3px] border-white">
+                      clip-hexagon shadow-lg ">
         <p className="text-sm italic">{subtitle}</p>
         <p className="text-lg font-bold">{title}</p>
       </div>
