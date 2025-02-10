@@ -3,7 +3,7 @@ import React from "react";
 const Footer: React.FC = () => {
   return (
     <footer className="bg-[#E2426C] py-16">
-      <div className="container mx-auto flex items-end flex-col md:flex-col lg:flex-row lg:items-center md:items-center justify-between px-8">
+      <div className="container mx-auto flex items-end flex-col md:flex-col lg:flex-row lg:items-center md:items-center justify-between sm:justify-around lg:px-8">
         
         {/* Hexagon Container (Left) */}
         <div className="flex flex-wrap justify-center gap-6 md:w-2/3  order-2 md:order-1">
