@@ -4,7 +4,7 @@ const About = () => {
       <div className="container mx-auto flex flex-col  md:flex-col md:items-start lg:flex-row items-start lg:items-start">
         {/* Left Section */}
         <div className="lg:w-1/2 mb-8 lg:mb-0 lg:p-9">
-          <h3 className="text-lg font-light text-gray-300 mb-2">About Us</h3>
+          <h3 className="text-lg font-light chyta-font text-gray-300 mb-2">About Us</h3>
           <h2 className="lg:text-4xl md:text-4xl text-2xl  font-bold text-white mb-4 flex flex-col">
             Know more
             <span className="text-[#F43F5E]">about Focus </span>

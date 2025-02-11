@@ -45,7 +45,7 @@ const Header: React.FC = () => {
       <div>
         
       <div className="sm:hidden text-center p-8 bg-white text-[#182F49]">
-        <h3 className="text-[#E2426C] bg-transparent text-lg font-semibold mb-2">
+        <h3 className="text-[#E2426C] chyta-font bg-transparent text-lg font-semibold mb-2">
             Focused on Your Success
           </h3>
         <h1 className="text-4xl bg-transparent font-extrabold text-[#182F49] leading-tight mb-4">
@@ -89,7 +89,7 @@ const Header: React.FC = () => {
               nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam
               erat volutpat.
             </p>
-            <p className="text-[#E2426C] font-bold text-lg">
+            <p className="text-[#E2426C] chyta-font font-bold text-lg">
               Ready to Upgrade Yourself?
             </p>
       </div>
@@ -99,7 +99,7 @@ const Header: React.FC = () => {
         <div className="max-sm:hidden w-5/12 sm:h-full">
           <div className="bg-transparent sm:p-8 md:p-16  lg:pl-20 lg:pt-20 max-w-lg sm:mx-auto sm:flex flex-col items-center justify-center text-center" style={{backgroundImage: `url(${pattern})`, backgroundSize: 'cover',backgroundPosition: 'center', backgroundRepeat: 'no-repeat',}}>
             {/* Heading */}
-            <h3 className="text-[#E2426C] bg-transparent text-lg font-semibold mb-2">
+            <h3 className="text-[#E2426C] chyta-font bg-transparent text-lg font-semibold mb-2">
             Focused on Your Success
           </h3>
           <h1 className="text-4xl bg-transparent font-extrabold text-[#182F49] leading-tight mb-4">
@@ -156,7 +156,7 @@ const Header: React.FC = () => {
               nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam
               erat volutpat.
             </p>
-            <p className="text-[#E2426C] font-bold text-lg">
+            <p className="text-[#E2426C] chyta-font font-bold text-lg">
               Ready to Upgrade Yourself?
             </p>
           </div>

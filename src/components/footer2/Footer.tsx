@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
             <img src={StackedLogo} alt="Focus Training Center Logo" className="w-40 h-40" />
             
           </div>
-          <p className="italic text-sm">Focused on Your Success</p>
+          <p className="italic chyta-font text-sm">Focused on Your Success</p>
         </div>
 
         {/* Quick Links */}
