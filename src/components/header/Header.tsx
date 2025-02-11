@@ -43,9 +43,7 @@ const Header: React.FC = () => {
         </div>
       </div>
       <div>
-        <div className="sm:hidden absolute top-[135%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-         <img src={cental} alt="Central Image" className="w-[300px] h-[300px] object-cover" />
-      </div>
+        
       <div className="sm:hidden text-center p-8 bg-white text-[#182F49]">
         <h3 className="text-[#E2426C] bg-transparent text-lg font-semibold mb-2">
             Focused on Your Success
@@ -63,6 +61,9 @@ const Header: React.FC = () => {
         </button>
       </div>
       <div className="sm:hidden bg-[#182F49] mt-12 mb-12  h-24 w-full">
+        <div className="sm:hidden absolute top-[135%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+         <img src={cental} alt="Central Image" className="w-[300px] h-[300px] object-cover" />
+      </div>
 
       </div>
       <div className="sm:hidden text-center items-center p-8 bg-white text-[#182F49]">
