@@ -8,12 +8,12 @@ const Home = () => {
   return (
     <div>
       <Header />
-      <div className="mt-[500px] ">
+      <div className="md:mt-[500px] ">
         <About />
       </div>
-      <Footer/>
-      <Footer1/>
-      <Footer2/>
+      <Footer />
+      <Footer1 />
+      <Footer2 />
     </div>
   );
 };
