@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <div>
       <Header />
-      <div className="mt-[500px] ">
+      <div className="sm:mt-[500px] ">
         <About />
       </div>
       <Footer/>
