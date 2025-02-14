@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
             <img src={StackedLogo} alt="Focus Training Center Logo" className="w-40 h-40" />
             
           </div>
-          <p className="italic text-sm">Focused on Your Success</p>
+          <p className="italic chyta-font text-sm">Focused on Your Success</p>
         </div>
 
         {/* Quick Links */}
@@ -32,7 +32,7 @@ const Footer: React.FC = () => {
 
         {/* Contact Info and Social Media */}
         <div >
-          <h3 className="text-xl font-semibold text-[#F9425F] mb-4">Subscribe to our Telegram Channel</h3>
+          <h3 className="text-xl max-sm:text-sm font-semibold text-[#F9425F] mb-4">Subscribe to our Telegram Channel</h3>
           <div className="flex items-center space-x-2">
             <a 
               href="https://t.me/focustrainingcenter" 
@@ -47,12 +47,12 @@ const Footer: React.FC = () => {
             </a>
           </div>
 
-          <div className="mt-6 space-y-2">
+          <div className="mt-6 montserrat space-y-2">
             <div className="flex items-center space-x-2">
               <Phone className="w-5 h-5" />
               <span>+251 96 308 1888</span>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex max-sm:flex-row items-center space-x-2">
               <Phone className="w-5 h-5" />
               <span>+251 96 309 9888</span>
             </div>

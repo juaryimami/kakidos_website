@@ -8,11 +8,11 @@ const Home = () => {
   return (
     <div>
       <Header />
-      <div className="md:mt-[500px] ">
+      <div className="sm:mt-[500px] ">
         <About />
       </div>
-      <Footer />
       <Footer1 />
+      <Footer />
       <Footer2 />
     </div>
   );

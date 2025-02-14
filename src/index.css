@@ -33,3 +33,25 @@
 clip-path: polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0% 50%);
 }
 
+@font-face {
+    font-family: 'ChytaScript';
+    src: url('/src/assets/fonts/ChytaScript-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.chyta-font {
+    font-family: 'ChytaScript', sans-serif;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/src/assets/fonts/Montserrat-Regular.ttf') format('truetype'); /* Use .otf if your file is .otf */
+  font-weight: normal;
+  font-style: normal;
+}
+
+.montserrat {
+    font-family: 'Montserrat', sans-serif;
+}
+
