@@ -7,9 +7,9 @@ const Footer: React.FC = () => {
         
         {/* Hexagon Container (Left) */}
         <div className="flex flex-wrap justify-center gap-6 md:w-2/3  order-2 md:order-1">
-          <Hexagon title="Courses with real world applications" subtitle="Carefully Curated" />
-          <Hexagon title="Job & Passive Income Opportunities" subtitle="Guaranteed" />
-          <Hexagon title="Payment Plans & Loan Systems" subtitle="Easy Flexible" />
+          <Hexagon title="Pay only 30% get 70% loan" subtitle="Carefully Curated" />
+          <Hexagon title="100% job opportunities" subtitle="Guaranteed" />
+          <Hexagon title="Course with real world applications" subtitle="Easy Flexible" />
         </div>
 
         {/* Title Section (Right) */}

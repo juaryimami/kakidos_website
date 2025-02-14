@@ -6,25 +6,20 @@ const About = () => {
         <div className="lg:w-1/2 mb-8 lg:mb-0 lg:p-9">
           <h3 className="text-lg font-light chyta-font text-gray-300 mb-2">About Us</h3>
           <h2 className="lg:text-4xl md:text-4xl text-2xl  font-bold text-white mb-4 flex flex-col">
-            Know more
-            <span className="text-[#F43F5E]">about Focus </span>
-            <span className="text-[#F43F5E]">Training Center </span>
+            Know more 
+            <span className=" text-white  font-bold ">about <span className="text-[#F43F5E] montserrat"> Focus </span></span>
+            
+            <span className="text-[#F43F5E] montserrat">Training Center </span>
           </h2>
         </div>
 
         {/* Right Section */}
         <div className="lg:w-1/2 lg:pl-12">
-          <p className="text-gray-400 mb-4">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat.
+          <p className="text-gray-400 montserrat mb-4">
+            At Focus Training Center, we are committed to shaping high-performing, ethical sales professionals who drive business success. Sales are the backbone of any industry, and having the right skills and mindset is crucial for growth.
           </p>
-          <p className="text-gray-400">
-            Sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-            aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud
-            exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea
-            commodo consequat.
+          <p className="text-gray-400 montserrat">
+            Our primary focus is real estate sales training, a field with high demand for skilled professionals both locally and globally. We bridge the gap by providing top-tier training, hands-on expertise, and career opportunities to help individuals excel in this competitive industry.
           </p>
         </div>
       </div>
