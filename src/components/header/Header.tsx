@@ -2,8 +2,14 @@ import { Link } from "react-router-dom";
 import cental from "../../assets/Focus TC - Imagery (Low-Res).png";
 import pattern from "../../assets/PatternGrid.png";
 import stackedlogo from "../../assets/Focus TC Logo - Stacked (No BG, Light Text) (1).png";
+import { useTranslation } from "react-i18next";
 
 const Header: React.FC = () => {
+  const { i18n, t } = useTranslation();
+  // const changeLanguage = (lng: string) => {
+  //   i18n.changeLanguage(lng);
+  // };
+
   return (
     <div className="lg:w-11/12 lg:mx-auto">
       {/* above blue rectangle */}
@@ -37,13 +43,35 @@ const Header: React.FC = () => {
 
       <div className="max-sm:hidden flex justify-center items-center h-16">
         <div className="bg-white w-5/12 h-full"></div>
-        <div className="bg-[#182F49] w-2/12 h-full"></div>
+        <div className="bg-[#182F49] w-2/12 h-full text-center p-2">
+          <div
+            className="relative w-20 h-8 bg-gray-300 rounded-md flex items-center cursor-pointer transition-all border border-gray-400"
+            onClick={() =>
+              i18n.changeLanguage(i18n.language === "en" ? "am" : "en")
+            }
+          >
+            {/* Moving Rectangular Ball */}
+            <div
+              className={`absolute top-1 w-8 h-6 bg-white rounded-md shadow-md transition-transform ${
+                i18n.language === "am" ? "translate-x-12" : "translate-x-1"
+              }`}
+            ></div>
+
+            {/* Language Labels */}
+            <span className="absolute left-2 text-xs font-semibold text-gray-700">
+              EN
+            </span>
+            <span className="absolute right-2 text-xs font-semibold text-gray-700">
+              አማ
+            </span>
+          </div>
+        </div>
         <div className="bg-white w-5/12 h-full"></div>
       </div>
       {/* navbars */}
       <div className="polygonal max-sm:hidden flex justify-center items-center h-16">
         <div className="bg-[#182F49] montserrat text-white w-5/12 h-full flex items-center justify-evenly ">
-          <Link to="/">Home</Link>
+          <Link to="/">{t("Home")}</Link>
           <Link to="#about">About Us</Link>
           <Link to="#courses">Courses</Link>
         </div>
@@ -65,9 +93,7 @@ const Header: React.FC = () => {
             A Convenient <br /> Online Learning <br /> Platform
           </h1>
           <p className="text-gray-700 montserrat bg-transparent mb-6">
-            Carefully curated courses to upgrade yourself and achieve financial
-            freedom by learning new skills for a guaranteed better job
-            opportunity and making passive income.
+            {t("mobileTitle")}
           </p>
           <button className="btn bg-[#E2426C] text-white font-semibold px-6 py-3 rounded-lg hover:bg-pink-600">
             Learn More

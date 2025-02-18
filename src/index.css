@@ -1,25 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 @layer utilities {
   .clip-hexagon {
     clip-path: polygon(
-      50% 0%,   /* Top point */
-      100% 25%, /* Top right */
-      100% 75%, /* Bottom right */
-      50% 100%, /* Bottom point */
-      0% 75%,   /* Bottom left */
-      0% 25%    /* Top left */
+      50% 0%,
+      /* Top point */ 100% 25%,
+      /* Top right */ 100% 75%,
+      /* Bottom right */ 50% 100%,
+      /* Bottom point */ 0% 75%,
+      /* Bottom left */ 0% 25% /* Top left */
     );
   }
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
-
 .btn {
-  display:inline-block;
+  display: inline-block;
   position: relative;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-weight: 500;
   text-decoration: none;
   text-transform: uppercase;
@@ -30,28 +29,27 @@
   transition: background-position-y ease-in-out 250ms;
 }
 .polygonal {
-clip-path: polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0% 50%);
+  clip-path: polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0% 50%);
 }
 
 @font-face {
-    font-family: 'ChytaScript';
-    src: url('/src/assets/fonts/ChytaScript-Regular.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "ChytaScript";
+  src: url("/src/assets/fonts/ChytaScript-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 .chyta-font {
-    font-family: 'ChytaScript', sans-serif;
+  font-family: "ChytaScript", sans-serif;
 }
 
 @font-face {
-  font-family: 'Montserrat';
-  src: url('/src/assets/fonts/Montserrat-Regular.ttf') format('truetype'); /* Use .otf if your file is .otf */
+  font-family: "Montserrat";
+  src: url("/src/assets/fonts/Montserrat-Regular.ttf") format("truetype"); /* Use .otf if your file is .otf */
   font-weight: normal;
   font-style: normal;
 }
 
 .montserrat {
-    font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
-
