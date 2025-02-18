@@ -1,9 +1,31 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import cental from "../../assets/Focus TC - Imagery (Low-Res).png"
 import pattern from "../../assets/PatternGrid.png"
 import stackedlogo from "../../assets/Focus TC Logo - Stacked (No BG, Light Text) (1).png"
 
+
+
 const Header: React.FC = () => {
+
+  
+  const texts = [
+    "Realstate <br/>Sales",
+    "Business <br/>Startup",
+    "Leadership",
+    "Sales",
+    "Content <br/>Marketing"
+  ];
+
+  const [index, setIndex] = useState(0);
+
+  const handleNext = () => {
+    setIndex((prevIndex) => (prevIndex + 1) % texts.length);
+  };
+
+  const handlePrev = () => {
+    setIndex((prevIndex) => (prevIndex - 1 + texts.length) % texts.length);
+  };
   return (
     <div className="lg:w-11/12 lg:mx-auto">
       {/* above blue rectangle */}
@@ -31,7 +53,7 @@ const Header: React.FC = () => {
         <div className="bg-[#182F49] montserrat text-white w-5/12 h-full flex items-center justify-evenly ">
           <Link to="/">Home</Link>
           <Link to="#about">About Us</Link>
-          <Link to="#courses">Courses</Link>
+          <Link to="/courses">Courses</Link>
         </div>
         <div className="bg-[#182F49] w-2/12 h-full flex  items-center">
             {/* <img src={Logo} alt="SVG Image" className="w-full h-full object-contain" /> */}
@@ -49,12 +71,10 @@ const Header: React.FC = () => {
             Focused on Your Success
           </h3>
         <h1 className="text-4xl bg-transparent montserrat font-extrabold text-[#182F49] leading-tight mb-4">
-          A Convenient <br /> Online Learning <br /> Platform
+          Invest in your<br/> future with just 30% 
           </h1>
         <p className="text-gray-700 montserrat bg-transparent mb-6">
-          Carefully curated courses to upgrade yourself and achieve financial freedom
-          by learning new skills for a guaranteed better job opportunity and making
-          passive income.
+          Pay only 30% of your course fee upfront and get a <strong>70% loan</strong> to cover the rest. Plus gain access to <strong>job opportunities</strong> that help you repay your loan while building your caree
          </p>
         <button className="btn bg-[#E2426C] text-white font-semibold px-6 py-3 rounded-lg hover:bg-pink-600">
          Learn More
@@ -69,24 +89,33 @@ const Header: React.FC = () => {
         <h2 className="text-[#E2426C] montserrat text-xl font-semibold mb-4">
               Our Courses
             </h2>
-            <div className="flex items-center justify-center space-x-7 mb-5">
-              <button className="text-[#E2426C] hover:text-pink-700 text-2xl font-bold">
-                <span>&lt;</span>
-              </button>
-              <h3 className="text-xl montserrat font-bold text-[#182F49] text-center">
-                Content <br />Creation
-              </h3>
-              <button className="text-[#E2426C] hover:text-pink-700 text-2xl font-bold">
-              <span>&gt;</span>
-              </button>
-           </div>
+      <div className="flex items-center justify-center space-x-7 mb-5">
+      <button
+        onClick={handlePrev}
+        className="text-[#E2426C] hover:text-pink-700 text-2xl font-bold"
+      >
+        <span>&lt;</span>
+      </button>
+      <h3 className="text-xl montserrat font-bold text-[#182F49] text-center">
+      {texts[index].split("<br/>").map((line, i) => (
+        <span key={i}>
+          {line}
+         {i !== texts[index].split("<br/>").length - 1 && <br />}
+         </span>
+      ))}
+     </h3>
+      <button
+        onClick={handleNext}
+        className="text-[#E2426C] hover:text-pink-700 text-2xl font-bold"
+      >
+        <span>&gt;</span>
+      </button>
+    </div>
             <button className="btn bg-[#E2426C] text-white font-semibold px-6 py-3 rounded-lg hover:bg-pink-600 mb-4">
               REGISTER
             </button>
             <p className="text-gray-600 montserrat text-base mb-4">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam
-              nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam
-              erat volutpat.
+              This course is designed by experienced professionals who bring years of expertise to the table. They’ve crafted the content in a way that’s easy to understand for learners of all generations.
             </p>
             <p className="text-[#E2426C] chyta-font font-bold text-lg">
               Ready to Upgrade Yourself?
@@ -134,17 +163,28 @@ const Header: React.FC = () => {
             <h2 className="text-[#E2426C] montserrat text-xl font-semibold mb-4">
               Our Courses
             </h2>
-            <div className="flex items-center space-x-7 mb-5">
-              <button className="text-[#E2426C] hover:text-pink-700 text-2xl font-bold">
-                <span>&lt;</span>
-              </button>
-              <h3 className="text-xl montserrat font-bold text-[#182F49]">
-                Content <br/>Creation
-              </h3>
-              <button className="text-[#E2426C] hover:text-pink-700 text-2xl font-bold">
-                <span>&gt;</span>
-              </button>
-            </div>
+            <div className="flex items-center justify-center space-x-7 mb-5">
+      <button
+        onClick={handlePrev}
+        className="text-[#E2426C] hover:text-pink-700 text-2xl font-bold"
+      >
+        <span>&lt;</span>
+      </button>
+      <h3 className="text-xl montserrat font-bold text-[#182F49] text-center">
+      {texts[index].split("<br/>").map((line, i) => (
+        <span key={i}>
+          {line}
+           {i !== texts[index].split("<br/>").length - 1 && <br />}
+         </span>
+       ))}
+        </h3>
+      <button
+        onClick={handleNext}
+        className="text-[#E2426C] hover:text-pink-700 text-2xl font-bold"
+      >
+        <span>&gt;</span>
+      </button>
+    </div>
             <button className="btn bg-[#E2426C] text-white font-semibold px-6 py-3 rounded-lg hover:bg-pink-600 mb-4">
               REGISTER
             </button>
