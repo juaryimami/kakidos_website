@@ -2,10 +2,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/home/Home";
 import About from "./components/about/About";
 import Courses from "./components/courses/Courses"
+import { LanguageProvider } from "./locales/LanguageContext";
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <LanguageProvider>
+      <BrowserRouter>
       {/* Routes */}
       <Routes>
         <Route path="/" element={<Home />} />
@@ -16,6 +18,8 @@ const App = () => {
         <Route path="/contact" element={<Contact />} /> */}
       </Routes>
     </BrowserRouter>
+    </LanguageProvider>
+    
   );
 };
 
