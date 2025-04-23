@@ -11,9 +11,9 @@ const Home = () => {
       <div className="sm:mt-[500px] ">
         <About />
       </div>
-      <Footer1 />
-      <Footer />
-      <Footer2 />
+      <Footer/>
+      <Footer1/>
+      <Footer2/>
     </div>
   );
 };
