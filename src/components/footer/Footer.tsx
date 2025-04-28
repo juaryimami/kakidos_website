@@ -1,42 +1,98 @@
-import React from "react";
-import { useContext } from "react";
-import { LanguageContext } from "../../locales/LanguageContext";
+import Map from '../../assets/map_picture.png';
+import Linkedin from '../../assets/linkedin.png';
+import Tiktok from '../../assets/tiktok.png'
 
-const Footer: React.FC = () => {
-  const { texts } = useContext(LanguageContext);
-
+export default function Footer() {
   return (
-    <footer className="bg-[#E2426C] py-16">
-      <div className="container mx-auto flex items-end flex-col md:flex-col lg:flex-row lg:items-center md:items-center justify-between sm:justify-around lg:px-8">
-        
-        {/* Hexagon Container (Left) */}
-        <div className="flex flex-wrap justify-center gap-6 md:w-2/3  order-2 md:order-1">
-          <Hexagon title={texts.our_unique.box1.title} subtitle={texts.our_unique.box1.heading} />
-          <Hexagon title={texts.our_unique.box2.title} subtitle={texts.our_unique.box2.heading} />
-          <Hexagon title={texts.our_unique.box3.title} subtitle={texts.our_unique.box3.heading} />
+    <footer className="bg-gray-900 text-white py-8 px-4">
+      <div className="flex flex-col md:flex-row justify-between max-w-6xl mx-auto space-y-6 md:space-y-0">
+        {/* Languages Section */}
+        <div>
+          <h4 className="font-semibold mb-2 uppercase">Languages</h4>
+          <ul className="space-y-1">
+            <li>*English</li>
+            <li>*Amharic</li>
+            <li>*Afan Oromo</li>
+            <li>*Tigrigna</li>
+          </ul>
         </div>
 
-        {/* Title Section (Right) */}
-        <div className="md:w-1/3 text-white text-right mt-8  md:mt-0 order-1 md:order-2">
-          <h2 className="text-xl md:text-2xl chyta-font lg:text-2xl font-bold mb-4">{texts.our_unique.p1}</h2>
-          <h3 className="lg:text-3xl md:text-3xl text-2xl text-[#182F49] font-extrabold">{texts.our_unique.p2}</h3>
+        {/* Useful Links Section */}
+        <div>
+          <h4 className="font-semibold mb-2 uppercase">Useful Link</h4>
+          <ul className="space-y-1">
+            <li>Home</li>
+            <li>About us</li>
+            <li>Contact us</li>
+          </ul>
         </div>
 
+        {/* Address Section with Map */}
+        <div>
+          <h4 className="font-semibold mb-2 uppercase">Address</h4>
+          <img
+            src={Map}
+            alt="Map"
+            className="w-60 h-40 object-cover rounded"
+          />
+        </div>
+      </div>
+
+      {/* Social Media Icons and Copyright */}
+      <div className="flex flex-col items-start mt-6 max-w-6xl mx-auto">
+        {/* Social Media Icons */}
+        <div className="flex space-x-4 mb-4">
+          <a href="#" className="text-white">
+            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Facebook_circle_pictogram.svg"
+                alt="Facebook"
+                className="w-5 h-5"
+              />
+            </div>
+          </a>
+          <a href="#" className="text-white">
+            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+              <img
+                src={Tiktok}
+                alt="TikTok"
+                className="w-5 h-5"
+              />
+            </div>
+          </a>
+          <a href="#" className="text-white">
+            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+              <img
+                src={Linkedin}
+                alt="LinkedIn"
+                className="w-5 h-5"
+              />
+            </div>
+          </a>
+          <a href="#" className="text-white">
+            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
+                alt="Instagram"
+                className="w-5 h-5"
+              />
+            </div>
+          </a>
+        </div>
+
+        {/* Copyright and Links */}
+        <div className="flex flex-col md:flex-row justify-between w-full max-w-6xl text-center text-sm border-t-2 border-gray-700 pt-4">
+          <p>© Copyright. All Rights Reserved.</p>
+          <div className="space-x-4">
+            <a href="#" className="hover:underline">
+              Terms of Use
+            </a>
+            <a href="#" className="hover:underline">
+              Privacy Policy
+            </a>
+          </div>
+        </div>
       </div>
     </footer>
   );
-};
-
-const Hexagon: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => {
-  return (
-    <div className="relative w-[200px] h-[300px] flex items-center justify-center text-center">
-      <div className="w-full h-full bg-[#112c4a] text-white flex flex-col items-center justify-center px-4 py-6
-                      clip-hexagon shadow-lg ">
-        <p className="text-sm chyta-font italic">{subtitle}</p>
-        <p className="text-lg font-bold">{title}</p>
-      </div>
-    </div>
-  );
-};
-
-export default Footer;
+}

@@ -1,21 +1,23 @@
-import About from "../about/About";
 import Header from "../header/Header";
+import HeroSection from "../herosection/HeroSection";
+import StatsSection from "../statesection/StatsSection";
+import ServicesSection from "../servicesection/ServicesSection";
+import WhyChooseUs from "../whychooseus/WhyChooseUs";
+import Testimonials from "../testimonials/Testimonials";
+import AboutUs from "../aboutus/AboutUs";
 import Footer from "../footer/Footer";
-import Footer1 from "../footer1/Footer";
-import Footer2 from "../footer2/Footer";
 
-const Home = () => {
+export default function HomePage() {
   return (
-    <div>
+    <div className="font-sans text-gray-900">
       <Header />
-      <div className="sm:mt-[500px] ">
-        <About />
-      </div>
-      <Footer/>
-      <Footer1/>
-      <Footer2/>
+      <HeroSection />
+      <StatsSection />
+      <ServicesSection />
+      <WhyChooseUs />
+      <Testimonials />
+      <AboutUs />
+      <Footer />
     </div>
   );
-};
-
-export default Home;
+}
