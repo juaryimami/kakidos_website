@@ -13,6 +13,8 @@ interface FormData {
   price: number;
   receipt: File | null;
   confirmed: boolean;
+  orderStatus: string | null; // Added field
+  rejectionReason: string | null; // Added field
 }
 
 export default function StatsSection() {
@@ -29,6 +31,8 @@ export default function StatsSection() {
     price: 0,
     receipt: null,
     confirmed: false,
+    orderStatus: "pending", // Default value
+    rejectionReason: null, // Default value
   });
 
   const handleInputChange = (
@@ -83,6 +87,8 @@ export default function StatsSection() {
       price: 0,
       receipt: null,
       confirmed: false,
+      orderStatus: "pending", // Reset added field
+      rejectionReason: null, // Reset added field
     });
     setIsPopupOpen(false);
     setStep(1);
@@ -119,6 +125,35 @@ export default function StatsSection() {
         params: emailParams,
       });
 
+      // Save booking to the database via backend API
+      const bookingData = {
+        orderId,
+        callType: storedData.callType,
+        startTime: storedData.startTime,
+        endTime: storedData.endTime,
+        duration: storedData.duration,
+        userId: storedData.userId,
+        userEmail: storedData.email,
+        created: storedData.created,
+        price: storedData.price,
+        confirmed: storedData.confirmed,
+        orderStatus: storedData.orderStatus,
+        rejectionReason: storedData.rejectionReason,
+      };
+
+      const apiResponse = await fetch('http://yourdomain.com:3001/bookings', { // Replace with your backend URL
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bookingData),
+      });
+
+      if (!apiResponse.ok) {
+        throw new Error('Failed to save booking to database');
+      }
+
+      const apiResult = await apiResponse.json();
+      console.log('Booking saved to database:', apiResult);
+
       // Generate PDF with header and footer
       const doc = new jsPDF();
       
@@ -146,6 +181,8 @@ export default function StatsSection() {
       }
       doc.text(`Created: ${storedData.created}`, 20, 130);
       doc.text(`Price: $${storedData.price.toFixed(2)}`, 20, 140);
+      doc.text(`Order Status: ${storedData.orderStatus || 'N/A'}`, 20, 150); // Display added field
+      doc.text(`Rejection Reason: ${storedData.rejectionReason || 'N/A'}`, 20, 160); // Display added field
 
       // Footer
       doc.setFontSize(10);
@@ -155,7 +192,7 @@ export default function StatsSection() {
 
       doc.save(`order_${orderId}.pdf`);
 
-      // Clear all localStorage data only after email is sent successfully
+      // Clear all localStorage data only after email and database save succeed
       localStorage.clear();
       console.log("localStorage cleared after email send:", localStorage.length === 0);
 
@@ -163,11 +200,11 @@ export default function StatsSection() {
       setIsPopupOpen(false);
       setStep(1);
     } catch (error: any) {
-      console.error("Failed to send email:", {
+      console.error("Failed to process order:", {
         error: error.text || error.message || error,
         params: emailParams,
       });
-      alert(`Failed to send email: ${error.text || "Unknown error"}`);
+      alert(`Failed to process order: ${error.text || error.message || "Unknown error"}`);
       return;
     }
   };
@@ -355,6 +392,8 @@ export default function StatsSection() {
                     )}
                     <p><strong>Created:</strong> {formData.created}</p>
                     <p><strong>Price:</strong> ${formData.price.toFixed(2)}</p>
+                    <p><strong>Order Status:</strong> {formData.orderStatus || 'N/A'}</p>
+                    <p><strong>Rejection Reason:</strong> {formData.rejectionReason || 'N/A'}</p>
                   </div>
 
                   <div className="mt-4">
