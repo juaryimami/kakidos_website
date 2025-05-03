@@ -1,5 +1,6 @@
 import { useState, ChangeEvent, MouseEvent } from "react";
 import jsPDF from "jspdf";
+import emailjs from "@emailjs/browser";
 
 interface FormData {
   callType: "anonymous" | "disclosed";
@@ -64,39 +65,111 @@ export default function StatsSection() {
     setStep(2);
   };
 
-  const handleConfirmOrder = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleBack = () => {
+    setStep(1);
+  };
+
+  const handleCancel = () => {
+    localStorage.clear(); // Clear all localStorage data
+    console.log("localStorage cleared:", localStorage.length === 0); // Verify clearing
+    setFormData({ // Reset form data
+      callType: "anonymous",
+      startTime: "",
+      endTime: "",
+      duration: "",
+      userId: "",
+      email: "",
+      created: new Date().toISOString(),
+      price: 0,
+      receipt: null,
+      confirmed: false,
+    });
+    setIsPopupOpen(false);
+    setStep(1);
+  };
+
+  const handleConfirmOrder = async (e: MouseEvent<HTMLButtonElement>) => {
     const orderId = `ORD-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
     const storedData: FormData = JSON.parse(localStorage.getItem("formData") || "{}");
 
-    // Generate PDF
-    const doc = new jsPDF();
-    doc.text("Order Confirmation", 20, 20);
-    doc.text(`Order ID: ${orderId}`, 20, 30);
-    doc.text(`Call Type: ${storedData.callType}`, 20, 40);
-    doc.text(`Start Time: ${storedData.startTime}`, 20, 50);
-    doc.text(`End Time: ${storedData.endTime}`, 20, 60);
-    doc.text(`Duration: ${storedData.duration} minutes`, 20, 70);
-    if (storedData.callType === "disclosed") {
-      doc.text(`User ID: ${storedData.userId}`, 20, 80);
-      doc.text(`Email: ${storedData.email}`, 20, 90);
-    }
-    console.log(e)
-    doc.text(`Created: ${storedData.created}`, 20, 100);
-    doc.text(`Price: $${storedData.price.toFixed(2)}`, 20, 110);
-    doc.save(`order_${orderId}.pdf`);
-
-    // Simulate sending email to company
-    console.log("Sending email to company with order details:", {
+    // Send email using EmailJS
+    const emailParams = {
       orderId,
-      ...storedData,
-    });
+      callType: storedData.callType,
+      startTime: storedData.startTime,
+      endTime: storedData.endTime,
+      duration: storedData.duration,
+      userId: storedData.callType === "disclosed" ? storedData.userId : storedData.userId,
+      userEmail: storedData.callType === "disclosed" ? storedData.email : "", // Renamed to avoid conflict
+      created: storedData.created,
+      price: storedData.price.toFixed(2),
+      email: "booking@hashimconsultancy.org", // Matches template's {{email}}
+    };
 
-    // Clear all localStorage data
-    localStorage.clear();
+    try {
+      const response = await emailjs.send(
+        "service_6suamgo", // Your EmailJS Service ID
+        "template_vcm7x1t", // Your EmailJS Template ID
+        emailParams,
+        "9FJX91r2UM2mbNwoW" // Your EmailJS User ID (Public Key)
+      );
+      console.log("Email sent successfully", {
+        recipient: emailParams.email,
+        response: response,
+        params: emailParams,
+      });
 
-    alert(`Order Confirmed! Order ID: ${orderId}`);
-    setIsPopupOpen(false);
-    setStep(1);
+      // Generate PDF with header and footer
+      const doc = new jsPDF();
+      
+      // Header
+      doc.setFontSize(12);
+      doc.text("Hashim Consultancy", 20, 20);
+      doc.setFontSize(10);
+      doc.text("Email: info@hashimconsultancy.org", 20, 28);
+      doc.text("Phone: +251-123-456-789", 20, 34);
+      // Placeholder for logo (replace with actual logo URL or base64 image)
+      // doc.addImage("https://example.com/logo.png", "PNG", 160, 10, 30, 30);
+
+      // Main content
+      doc.setFontSize(16);
+      doc.text("Order Confirmation", 20, 50);
+      doc.setFontSize(12);
+      doc.text(`Order ID: ${orderId}`, 20, 60);
+      doc.text(`Call Type: ${storedData.callType}`, 20, 70);
+      doc.text(`Start Time: ${storedData.startTime}`, 20, 80);
+      doc.text(`End Time: ${storedData.endTime}`, 20, 90);
+      doc.text(`Duration: ${storedData.duration} minutes`, 20, 100);
+      if (storedData.callType === "disclosed") {
+        doc.text(`User ID: ${storedData.userId}`, 20, 110);
+        doc.text(`Email: ${storedData.email}`, 20, 120);
+      }
+      doc.text(`Created: ${storedData.created}`, 20, 130);
+      doc.text(`Price: $${storedData.price.toFixed(2)}`, 20, 140);
+
+      // Footer
+      doc.setFontSize(10);
+      doc.text("Hashim Consultancy", 20, 280);
+      doc.text("Email: info@hashimconsultancy.org", 20, 286);
+      doc.text("Phone: +251-123-456-789", 20, 292);
+
+      doc.save(`order_${orderId}.pdf`);
+
+      // Clear all localStorage data only after email is sent successfully
+      localStorage.clear();
+      console.log("localStorage cleared after email send:", localStorage.length === 0);
+
+      alert(`Order Confirmed! Order ID: ${orderId}`);
+      setIsPopupOpen(false);
+      setStep(1);
+    } catch (error: any) {
+      console.error("Failed to send email:", {
+        error: error.text || error.message || error,
+        params: emailParams,
+      });
+      alert(`Failed to send email: ${error.text || "Unknown error"}`);
+      return;
+    }
   };
 
   return (
@@ -194,7 +267,7 @@ export default function StatsSection() {
                       />
                     </div>
 
-                    {formData.callType === "disclosed" && (
+                    {formData.callType === "anonymous" && (
                       <div>
                         <label className="block text-sm font-medium text-gray-700">User ID</label>
                         <input
@@ -244,8 +317,8 @@ export default function StatsSection() {
 
                 <div className="flex space-x-4 mt-4">
                   <button
-                    className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
-                    onClick={() => setIsPopupOpen(false)}
+                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                    onClick={handleCancel}
                   >
                     Cancel
                   </button>
@@ -261,58 +334,85 @@ export default function StatsSection() {
 
             {/* Review and Confirm Step */}
             {step === 2 && (
-              <div className="w-full p-4 bg-white rounded-lg m-2">
-                <h3 className="text-xl font-bold mb-4 text-gray-800">Review Your Details</h3>
-                <div className="space-y-2 text-gray-700">
-                  <p><strong>Call Type:</strong> {formData.callType}</p>
-                  <p><strong>Start Time:</strong> {formData.startTime}</p>
-                  <p><strong>End Time:</strong> {formData.endTime}</p>
-                  <p><strong>Duration:</strong> {formData.duration} minutes</p>
-                  {formData.callType === "disclosed" && (
-                    <>
-                      <p><strong>User ID:</strong> {formData.userId}</p>
-                      <p><strong>Email:</strong> {formData.email}</p>
-                    </>
-                  )}
-                  <p><strong>Created:</strong> {formData.created}</p>
-                  <p><strong>Price:</strong> ${formData.price.toFixed(2)}</p>
-                </div>
+              <div className="flex flex-col md:flex-row w-full">
+                {/* Left: Review Details */}
+                <div className="w-full md:w-1/2 p-4 bg-white rounded-lg m-2">
+                  <h3 className="text-xl font-bold mb-4 text-gray-800">Review Your Details</h3>
+                  <div className="space-y-2 text-gray-700">
+                    <p><strong>Call Type:</strong> {formData.callType}</p>
+                    <p><strong>Start Time:</strong> {formData.startTime}</p>
+                    <p><strong>End Time:</strong> {formData.endTime}</p>
+                    <p><strong>Duration:</strong> {formData.duration} minutes</p>
+                    {formData.callType === "anonymous" && (
+                      <>
+                        <p><strong>User ID:</strong> {formData.userId}</p>
+                      </>
+                    )}
+                    {formData.callType === "disclosed" && (
+                      <>
+                        <p><strong>Email:</strong> {formData.email}</p>
+                      </>
+                    )}
+                    <p><strong>Created:</strong> {formData.created}</p>
+                    <p><strong>Price:</strong> ${formData.price.toFixed(2)}</p>
+                  </div>
 
-                <div className="mt-4">
-                  <label className="block text-sm font-medium text-gray-700">Upload Receipt</label>
-                  <input
-                    type="file"
-                    onChange={handleFileChange}
-                    className="w-full p-2 border rounded text-gray-700"
-                  />
-                </div>
-
-                <div className="mt-4">
-                  <label className="flex items-center">
+                  <div className="mt-4">
+                    <label className="block text-sm font-medium text-gray-700">Upload Receipt</label>
                     <input
-                      type="checkbox"
-                      checked={formData.confirmed}
-                      onChange={handleCheckboxChange}
-                      className="mr-2"
+                      type="file"
+                      onChange={handleFileChange}
+                      className="w-full p-2 border rounded text-gray-700"
                     />
-                    <span className="text-gray-700">I confirm everything is correct</span>
-                  </label>
+                  </div>
+
+                  <div className="mt-4">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={formData.confirmed}
+                        onChange={handleCheckboxChange}
+                        className="mr-2"
+                      />
+                      <span className="text-gray-700">I confirm everything is correct</span>
+                    </label>
+                  </div>
+
+                  <div className="flex space-x-4 mt-4">
+                    <button
+                      className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
+                      onClick={handleBack}
+                    >
+                      Back
+                    </button>
+                    <button
+                      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                      onClick={handleCancel}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                      onClick={handleConfirmOrder}
+                      disabled={!formData.receipt || !formData.confirmed}
+                    >
+                      Confirm Order
+                    </button>
+                  </div>
                 </div>
 
-                <div className="flex space-x-4 mt-4">
-                  <button
-                    className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
-                    onClick={() => setIsPopupOpen(false)}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                    onClick={handleConfirmOrder}
-                    disabled={!formData.receipt || !formData.confirmed}
-                  >
-                    Confirm Order
-                  </button>
+                {/* Right: Available Payment Methods */}
+                <div className="w-full md:w-1/2 p-4 bg-white rounded-lg m-2">
+                  <h3 className="text-xl font-bold mb-4 text-gray-800">Available Payment Methods</h3>
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                      <li>Commercial Bank of Ethiopia</li>
+                      <li>Awash Bank</li>
+                      <li>Dashen Bank</li>
+                      <li>Bank of Abyssinia</li>
+                      <li>Cooperative Bank of Oromia</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             )}

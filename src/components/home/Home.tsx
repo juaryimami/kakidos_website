@@ -6,6 +6,7 @@ import WhyChooseUs from "../whychooseus/WhyChooseUs";
 import Testimonials from "../testimonials/Testimonials";
 import AboutUs from "../aboutus/AboutUs";
 import Footer from "../footer/Footer";
+import VideoSection from "../video/VideoSection";
 
 export default function HomePage() {
   return (
@@ -13,6 +14,7 @@ export default function HomePage() {
       <Header />
       <HeroSection />
       <StatsSection />
+      <VideoSection />
       <ServicesSection />
       <WhyChooseUs />
       <Testimonials />

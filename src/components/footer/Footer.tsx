@@ -1,13 +1,13 @@
 import Map from '../../assets/map_picture.png';
 import Linkedin from '../../assets/linkedin.png';
-import Tiktok from '../../assets/tiktok.png'
+import Tiktok from '../../assets/tiktok.png';
 
 export default function Footer() {
   return (
     <footer className="bg-gray-900 text-white py-8 px-4">
-      <div className="flex flex-col md:flex-row justify-between max-w-6xl mx-auto space-y-6 md:space-y-0">
+      <div className="grid grid-cols-1 md:flex md:flex-row justify-between max-w-6xl mx-auto space-y-6 md:space-y-0 md:space-x-6 items-start">
         {/* Languages Section */}
-        <div>
+        <div className="col-span-1 md:w-1/3">
           <h4 className="font-semibold mb-2 uppercase">Languages</h4>
           <ul className="space-y-1">
             <li>*English</li>
@@ -18,22 +18,23 @@ export default function Footer() {
         </div>
 
         {/* Useful Links Section */}
-        <div>
+        <div className="col-span-1 md:w-1/3">
           <h4 className="font-semibold mb-2 uppercase">Useful Link</h4>
           <ul className="space-y-1">
             <li>Home</li>
             <li>About us</li>
             <li>Contact us</li>
+            <li>Booking</li>
           </ul>
         </div>
 
         {/* Address Section with Map */}
-        <div>
+        <div className="col-span-2 md:w-1/3">
           <h4 className="font-semibold mb-2 uppercase">Address</h4>
           <img
             src={Map}
             alt="Map"
-            className="w-60 h-40 object-cover rounded"
+            className="w-full max-w-60 h-40 object-cover rounded"
           />
         </div>
       </div>
