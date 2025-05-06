@@ -99,6 +99,7 @@ export default function StatsSection() {
     const storedData: FormData = JSON.parse(localStorage.getItem("formData") || "{}");
 
     // Send email using EmailJS
+    console.log(e)
     const emailParams = {
       orderId,
       callType: storedData.callType,
@@ -141,7 +142,7 @@ export default function StatsSection() {
         rejectionReason: storedData.rejectionReason,
       };
 
-      const apiResponse = await fetch('http://yourdomain.com:3001/bookings', { // Replace with your backend URL
+      const apiResponse = await fetch('http://hashimconsultancy.org:3001/bookings', { // Replace with your backend URL
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bookingData),
