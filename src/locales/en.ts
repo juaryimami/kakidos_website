@@ -8,11 +8,13 @@ const en = {
     learnMore: "Learn More",
   },
   hero: {
-    heading: "Focused on Your Success",
-    title: "Invest in your future with just 30%",
-    description:
-      "Pay only 30% of your course fee upfront and get a <strong>70% loan</strong> to cover the rest. Plus gain access to <strong>job opportunities</strong> that help you repay your loan while building your caree",
-    learnMore: "Learn More",
+    heroHeading: "Your voice matters.\nWe're here\nto listen.",
+    heroSubtext: "Hashim Consultancy and Training offers 24/7 mental health support through anonymous calls and professional one-on-one therapy. Whether you’re in crisis or just need someone to talk to — we’re here for you, always.",
+  },
+   stateSelection:{
+    livestatus: "Online Suport",
+    carriees: "Certified Therapists",
+    call:"Book Your Call Today"
   },
   courses: {
     title: "Our Courses",

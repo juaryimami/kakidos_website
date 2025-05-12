@@ -1,8 +1,33 @@
-import { useState } from "react";
+import { useState,useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import HashimLogo from '../../assets/hashim_logo.png';
+import { LanguageContext } from "../../locales/LanguageContext";
+
 
 export default function Header() {
+  const { texts, switchLanguage } = useContext(LanguageContext);
+  const navigate = useNavigate();
+
+  const [language, setLanguage] = useState<"en" | "am">("en");
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
+  const goToMainPage = () => {
+    navigate("/"); // Navigate to the root route ("/") 
+  };
+
+  const handleNavigationContactus = () => {
+    const aboutSection = document.getElementById('contact-us');
+    if (aboutSection) {
+      aboutSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+   const handleNavigationAboutus = () => {
+    const aboutSection = document.getElementById('about-us');
+    if (aboutSection) {
+      aboutSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -37,10 +62,35 @@ export default function Header() {
 
       {/* Navigation Links (visible on medium screens and above) */}
       <nav className="hidden md:flex items-center space-x-8 text-base text-gray-700">
-        <a href="#" className="underline underline-offset-4 text-blue-500">Home</a>
-        <a href="#" className="hover:underline underline-offset-4">About us</a>
-        <a href="#" className="hover:underline underline-offset-4">Contact us</a>
-        <a href="#" className="hover:underline underline-offset-4">My Booking</a>
+        <a href="/" onClick={goToMainPage} className="hover:underline underline-offset-4 text-blue-500">{texts.navbar.home}</a>
+        <a href="#about-us" onClick={handleNavigationAboutus} className="hover:underline underline-offset-4">{texts.navbar.about}</a>
+        <a href="#contact-us" onClick={handleNavigationContactus} className="hover:underline underline-offset-4">{texts.navbar.contact}</a>
+        <a href="#" className="hover:underline underline-offset-4">{texts.navbar.learnMore}</a>
+                  {language == "en" ? (
+            <button
+              onClick={() => {
+                setLanguage("am");
+                switchLanguage("am");
+              }}
+              className={`px-2 py-1 text-[8px] mx-1 rounded ${
+                "bg-blue-600 text-white" 
+              }`}
+            >
+              አማ
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                setLanguage("en");
+                switchLanguage("en");
+              }}
+              className={`px-2 py-1 text-[8px] mx-1 rounded ${
+                "bg-blue-600 text-white" 
+              }`}
+            >
+              Eng
+            </button>
+          )}
 
        
       </nav>
@@ -48,11 +98,37 @@ export default function Header() {
       {/* Mobile Menu (visible when hamburger is clicked) */}
       {isMenuOpen && (
         <div className="absolute top-16 right-0 w-48 bg-white bg-opacity-90 rounded-l-lg shadow-md flex flex-col items-start space-y-4 p-4 md:hidden">
-          <a href="#" className="text-blue-500 underline underline-offset-4">Home</a>
-          <a href="#" className="hover:underline underline-offset-4 text-gray-700">About us</a>
-          <a href="#" className="hover:underline underline-offset-4 text-gray-700">Contact us</a>
-          <a href="#" className="hover:underline underline-offset-4">My Booking</a>
+          <a href="/" onClick={goToMainPage} className="text-blue-500 underline underline-offset-4">{texts.navbar.home}</a>
+          <a href="#about-us" onClick={handleNavigationAboutus} className="hover:underline underline-offset-4 text-gray-700">{texts.navbar.about}</a>
+          <a href="#contact-us" onClick={handleNavigationContactus} className="hover:underline underline-offset-4 text-gray-700">{texts.navbar.contact}</a>
+          <a href="#" className="hover:underline underline-offset-4">{texts.navbar.learnMore}</a>
+                    {language == "en" ? (
+            <button
+              onClick={() => {
+                setLanguage("am");
+                switchLanguage("am");
+              }}
+              className={`px-2 py-1 text-[8px] mx-1 rounded ${
+                "bg-blue-600 text-white" 
+              }`}
+            >
+              አማ
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                setLanguage("en");
+                switchLanguage("en");
+              }}
+              className={`px-2 py-1 text-[8px] mx-1 rounded ${
+                "bg-blue-600 text-white" 
+              }`}
+            >
+              Eng
+            </button>
+          )}
         </div>
+        
       )}
     </header>
   );

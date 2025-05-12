@@ -2,7 +2,7 @@ import FamilyImage from '../../assets/family_image.png';
 
 export default function AboutUs() {
   return (
-    <section className="bg-white">
+    <section id='about-us' className="bg-white">
       {/* Content Section - Centered Container */}
       <div className="py-8 md:py-16 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center">
         <div className="max-w-4xl w-full mx-auto">
