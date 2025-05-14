@@ -15,80 +15,66 @@ const en = {
     livestatus: "Online Suport",
     carriees: "Certified Therapists",
     call:"Book Your Call Today"
-  },
-  courses: {
-    title: "Our Courses",
-    register: "REGISTER",
-    description:
-      "This course is designed by experienced professionals who bring years of expertise to the table. They’ve crafted the content in a way that’s easy to understand for learners of all generations.",
-    upgrade: "Ready to Upgrade Yourself?",
-  },
-  about: {
-  heading: "About Us",
-  knowMore: "Who We Are",
-  about: "about",
-  focus: "Focus",
-  trainingCenter: "Training Center",
-  p1: "At Focus Training Center, we specialize in delivering highly recommended courses designed to empower professionals in real estate sales and business startups. Our mission is to provide practical, industry-driven training that equips individuals with the skills and confidence to succeed in today’s competitive business landscape.",
-  p2: "Our primary focus is real estate sales training, a field with high demand for skilled professionals both locally and globally. We bridge the gap by providing top-tier training, hands-on expertise, and career opportunities to help individuals excel in this competitive industry.",
-  p3:"With our unique “Pay 30%, Get 70% Loan, and Job Opportunities” model, we make professional training affordable and accessible, ensuring our students get the best education while securing career pathways to repay their loans and succeed in sales."
+  }
+,
+ registration_steps: {
+ heading: "Registration Steps",
+ step1: "Select your call type (anonymous or disclosed).",
+ step2: "Choose the expected start and end time for your session.",
+ step3: "Provide user details if required (based on call type).",
+ step3_1: "If the call type is disclosed, please fill your email account.",
+ step3_2: "If your call type is anonymous, please download the app from the" +
+  "<a href='https://getsession.org/download' target='_blank' rel='noopener noreferrer' style='color: #007bff; text-decoration: underline;'>link provided below </a>" +
+  "and create the username that does not disclose yourself, then fill it in the user ID section.",
+ step4: "Review the calculated duration and price.",
+ step5: "Click"+ "Continue" +"to review your details.",
+ step6: "Upload a receipt and confirm the order.",
+ note: " For anonymous caller please download app " +
+      
+      " and create user"
 },
+registration_form: {
+  heading: "Registration Form",
+  calltype: "Call Type",
+  starttime: "Start Time",
+  endtime: "End Time",
+  duration: "Duration",
+  price: "Price",
+  user_id: "User ID",
+  createdat: "Created At"
 
-fake: {
-  warning: "⚠️ Warning",
-  heading: "Dear Focus Training Center Community,",
-  p1: "We have become aware that fraudulent Telegram channels and groups, impersonating our organization using our name and logo, have been created. Some of these fake platforms are soliciting payments from individuals.",
-  p2: " Therefore, we would like to clarify that these imitation pages do not represent our organization. The only official communication channels and payment platforms associated with our organization are those listed on this website.",
-  p3: "Our organization has no affiliation with these fraudulent channels and groups. We urge you to remain cautious and avoid falling victim to any financial scams."
-},
-
-our_unique: {
-    box1: {
-        heading: "Carefully Curated",
-        title: "Pay only 30% get 70% loan"
-    },
-    box2: {
-        heading: "Guaranteed",
-        title: "100% job opportunities"
-    },
-    box3: {
-        heading: "Easy Flexible",
-        title: "Course with real world applications"
-    },
-    p1: "What makes us different?",
-    p2: "Our unique Plans & Offerings"
 
 },
-links: "Quick Links",
-telegram: "Subscribe to our Telegram Channel",
-trainings: {
-  text1: "Unlock ur path to sucess",
-  text2: "Are you ready to transform your life and achieve financial freedom? Focus Training Center equips young, ambitious individuals with the tools to become successful real estate agents and business owners.",
-  why: {
-    h1: "Why Choose Focus Training Center?",
-    p1: "We offer two high-demand training packages with 100% job opportunities and a chance to win a 200,000 Birr reward to fund your entrepreneurial dreams."
-  },
-  realstate: {
-    h1: "Real Estate Sales Package",
-    p1: "Comprehensive real estate sales training.",
-    p2: "Bonus: Basic sales & content marketing skills.",
-    p3: "100% Job Opportunity with partner real estate firms."
-  },
-   marketing: {
-    h1: "Business Startup Package",
-    p1: "Expert business startup training.",
-    p2: "Bonus: Content marketing & leadership training.",
-    p3: "200,000 Birr Reward for the best business model idea."
-  },
-  call_toaction: {
-    h3: "Don't Miss Out – Take Action Now!",
-    p: "Join Focus Training Center and gain access to life-changing opportunities.",
-    btn: "Register Now"
-
-  },
-   
+review: {
+  check: "I confirm everything is correct",
+  heading: "Review Your Details",
+  uploadreciept: "Upload Receipt",
+  minutes: "minutes"
+}
+,
+buttons: {
+  cancel: "Cancel",
+  contunue: "Continue",
+  confirm: "Confirm",
+  back: "bacl"
 },
-our_partner: "Our Partners"
+video: {
+  heading: "Discover Web Hashim Consultancy",
+  subheading: "Learn how Web Hashim Consultancy can transform your business with expert web development and strategic solutions."
+},
+payment_options: {
+  heading: "Available Payment Options",
+  owner: "Account Owner",
+  account_no: "Account Number",
+  swift_code: "Swift Code",
+  name: "KEMER HASHIM SELMAN",
+  dashen_name: "Dashen Bank",
+  abidinya_name: "Bank OF Abyssinia",
+  cooprative_name: "Cooperative Bank Of Oromia",
+  oro_int_name: "Oromia International Bank",
+
+
+}
 
 
 };

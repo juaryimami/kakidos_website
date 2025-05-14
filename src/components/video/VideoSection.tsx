@@ -1,4 +1,6 @@
 import React from 'react';
+import {  useContext } from "react";
+import { LanguageContext } from "../../locales/LanguageContext";
 
 interface VideoSectionProps {
   videoUrl?: string;
@@ -12,6 +14,8 @@ const VideoSection: React.FC<VideoSectionProps> = ({
   title = 'Discover Web Hashim Consultancy',
   description = 'Learn how Web Hashim Consultancy can transform your business with expert web development and strategic solutions.',
 }) => {
+
+  const { texts } = useContext(LanguageContext);
   return (
     <section className="relative py-16 overflow-hidden bg-gray-100">
       {/* Geometric Background */}
@@ -27,12 +31,12 @@ const VideoSection: React.FC<VideoSectionProps> = ({
       <div className="relative z-10 container mx-auto px-4 text-center">
         {/* Title */}
         <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-          {title}
+          {texts.video.heading}
         </h2>
 
         {/* Description */}
         <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-          {description}
+          {texts.video.subheading}
         </p>
 
         {/* Video Player */}
