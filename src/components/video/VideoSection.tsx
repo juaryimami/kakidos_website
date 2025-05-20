@@ -11,9 +11,7 @@ interface VideoSectionProps {
 
 const VideoSection: React.FC<VideoSectionProps> = ({
   videoUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ', // Default to a sample YouTube video
-  title = 'Discover Web Hashim Consultancy',
-  description = 'Learn how Web Hashim Consultancy can transform your business with expert web development and strategic solutions.',
-}) => {
+  }) => {
 
   const { texts } = useContext(LanguageContext);
   return (

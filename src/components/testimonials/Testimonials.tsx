@@ -1,13 +1,18 @@
+import { useContext } from "react";
+import { LanguageContext } from "../../locales/LanguageContext";
+
 export default function Testimonials() {
+ const { texts } = useContext(LanguageContext);
+
   return (
     <section className="bg-[#33393F] py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
         {/* Left Section - Title Area */}
         <div className="flex flex-col justify-center">
-          <h2 className="text-4xl font-bold text-white">
-            <span className="block">What Our Client's</span>
-            <span className="block text-blue-400">say About Us</span>
-          </h2>
+          <h2
+          className="text-3xl md:text-4xl font-bold mb-8 text-gray-900 leading-tight"
+          dangerouslySetInnerHTML={{ __html: texts.testimonials.header }}
+        />
           <div className="mt-6 flex items-center">
             {/* Placeholder for user icons */}
             <div className="flex -space-x-2 mr-2">
@@ -16,7 +21,7 @@ export default function Testimonials() {
               <div className="w-8 h-8 bg-orange-500 rounded-full border-2 border-[#33393F]"></div>
               <div className="w-8 h-8 bg-green-500 rounded-full border-2 border-[#33393F]"></div>
             </div>
-            <p className="text-lg text-blue-400">100+ Reviews</p>
+            <p className="text-lg text-blue-400">100+ {texts.testimonials.review}</p>
           </div>
         </div>
 
@@ -25,7 +30,7 @@ export default function Testimonials() {
           {/* Placeholder for image */}
           <div className="w-16 h-16 bg-gray-200 rounded mb-4"></div>
           <p className="text-gray-700 text-base leading-relaxed mb-4">
-            The scallops were perfectly cooked, tender, and flavorful, paired beautifully with a creamy risotto and seasonal vegetables. The presentation was artful, showcasing the chef's attention to detail. Highly recommend it for anyone looking for a memorable dining experience.
+            {texts.testimonials.content}
           </p>
           {/* Star Rating */}
           <div className="flex mb-4">
@@ -41,7 +46,9 @@ export default function Testimonials() {
             ))}
           </div>
           <div className="flex items-center">
-            <p className="font-bold text-gray-900 uppercase">Kuman Tunman</p>
+           <p className="font-bold text-gray-900 uppercase" style={{ filter: "blur(6px)" }}>
+        Kuman Tunman
+      </p>
             <div className="ml-2 flex">
               <div className="w-2 h-4 bg-red-500 mr-1"></div>
               <div className="w-2 h-4 bg-red-500"></div>

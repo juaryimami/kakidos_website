@@ -49,7 +49,7 @@ review: {
   check: "I confirm everything is correct",
   heading: "Review Your Details",
   uploadreciept: "Upload Receipt",
-  minutes: "minutes"
+  minuts: "minutes"
 }
 ,
 buttons: {
@@ -75,6 +75,49 @@ payment_options: {
 
 
 }
+,services: {
+    heading: "OUR SERVICES ",
+    subHeading: "WHAT WE OFFER",
+    service1: "Anonymous Call Therapy",
+    service2: "Resource Development for Mental Health Education",
+    service3: "Organizational Training for Employee Well-Being",
+    service4: "Training Workshops on Mental Health Awareness",
+    service5: "Psychological and Psychiatric Consultations",
+    service6: "Tele-Counseling and Mental Health Support",
+  },
+  whyuouchooseus: {
+    heading: "Why you choose us?",
+    list1: "Available 24/7",
+    list2: "100% Anonymous",
+    list3: "Professional Therapists",
+    list4: "Youth-Focused & Inclusive",
+    list5: "Easy Booking, Simple Access"
+  },
+  aboutUs: {
+    heading: "ABOUT US",
+    content: "Hashim consultancy provides psychological and social support, focusing on trauma recovery, depression, abuse, and other mental health concerns. Our call center serves as a lifeline for those in need, offering professional guidance and a compassionate ear.",
+    missionheading: "MISSION",
+    missioncontent: "Our mission is to provide accessible, compassionate, and confidential mental health support through our dedicated call center services. We aim to empower individuals by offering immediate guidance, emotional support, and professional consultation—anytime, anywhere. Through compassionate care, we strive to promote mental well-being and prioritize help as it is within reach."
+  },
+  languages: {
+    heading: "LANGUAGES",
+    language1: "Amharic",
+    language2: "English",
+    language3: "Afan Oromo",
+    language4: "Tigrish"
+  },
+  testimonials: {
+  header: '<span class="block text-white">What Our Client\'s</span><span class="block text-blue-400">say About Us</span>',
+  review: "Review",
+  content: "I am incredibly grateful for the compassionate and professional care I received at Hashim Consultancy and Training. The therapist listened to me with great care, provided clear guidance, and offered truly insightful advice. I found genuine support for my mental health needs. The service was quick, confidential, and highly transformative. I highly recommend Hashim Consultancy and Training to anyone seeking mental health support."
+},
+address: {
+  heading: "address",
+  usefullinks: "Useful links"
+}
+
+  
+
 
 
 };

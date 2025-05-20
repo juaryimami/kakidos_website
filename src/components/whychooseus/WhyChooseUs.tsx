@@ -1,8 +1,11 @@
 import Call_center_icon from '../../assets/call_center_icon.png';
+import { useContext } from "react";
+import { LanguageContext } from "../../locales/LanguageContext";
 
 export default function WhyChooseUs() {
+  const { texts } = useContext(LanguageContext);
   return (
-    <section className="flex flex-col md:flex-row justify-between  bg-white py-16 px-6 max-w-6xl mx-auto gap-8 md:gap-12">
+    <section className="flex flex-col md:flex-row justify-between bg-white py-16 px-6 max-w-6xl mx-auto gap-8 md:gap-12">
       {/* Image Section - Adjusted for perfect alignment */}
       <div className="w-full md:w-5/12 flex justify-center">
         <img 
@@ -15,16 +18,16 @@ export default function WhyChooseUs() {
       {/* Content Section - Precise text styling */}
       <div className="w-full md:w-7/12">
         <h2 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900 leading-tight">
-          Why you choose us?
+          {texts.whyuouchooseus.heading}
         </h2>
         
         <ul className="space-y-5">
           {[
-            "Available 24/7",
-            "100% Anonymous",
-            "Professional Therapists",
-            "Youth-Focused & Inclusive",
-            "Easy Booking, Simple Access"
+            texts.whyuouchooseus.list1,
+            texts.whyuouchooseus.list2,
+            texts.whyuouchooseus.list3,
+            texts.whyuouchooseus.list4,
+            texts.whyuouchooseus.list5,
           ].map((item, index) => (
             <li key={index} className="flex items-start">
               <span className="inline-block w-6 h-6 mr-4 mt-0.5">

@@ -397,7 +397,7 @@ export default function StatsSection() {
                       <p><strong>{texts.registration_form.calltype}:</strong> {formData.callType}</p>
                       <p><strong>{texts.registration_form.starttime}:</strong> {formData.startTime}</p>
                       <p><strong>{texts.registration_form.endtime}:</strong> {formData.endTime}</p>
-                      <p><strong>{texts.registration_form.duration}:</strong> {formData.duration} {texts.review.minutes}</p>
+                      <p><strong>{texts.registration_form.duration}:</strong> {formData.duration} {texts.review.minuts}</p>
                       {formData.callType === "anonymous" && (
                         <>
                           <p><strong>{texts.registration_form.user_id}:</strong> {formData.userId}</p>

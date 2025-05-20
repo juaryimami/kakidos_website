@@ -1,6 +1,8 @@
 import { ArrowUp } from 'lucide-react';
 import Map from '../../assets/map_picture.png';
 import Tiktok from '../../assets/tiktok.png';
+import {  useContext } from "react";
+import { LanguageContext } from "../../locales/LanguageContext";
 
 export default function Footer() {
   // Scroll to top function
@@ -10,35 +12,36 @@ export default function Footer() {
       behavior: 'smooth',
     });
   };
+  const { texts } = useContext(LanguageContext);
 
   return (
     <footer id='contact-us' className="bg-gray-900 text-white py-8 px-4">
       <div className="grid grid-cols-1 md:flex md:flex-row justify-between max-w-6xl mx-auto space-y-6 md:space-y-0 md:space-x-6 items-start">
         {/* Languages Section */}
         <div className="col-span-1 md:w-1/3">
-          <h4 className="font-semibold mb-2 uppercase">Languages</h4>
+          <h4 className="font-semibold mb-2 uppercase">{texts.languages.heading}</h4>
           <ul className="space-y-1">
-            <li>*English</li>
-            <li>*Amharic</li>
-            <li>*Afan Oromo</li>
-            <li>*Tigrigna</li>
+            <li>*{texts.languages.language1}</li>
+            <li>*{texts.languages.language2}</li>
+            <li>*{texts.languages.language3}</li>
+            <li>*{texts.languages.language4}</li>
           </ul>
         </div>
 
         {/* Useful Links Section */}
         <div className="col-span-1 md:w-1/3">
-          <h4 className="font-semibold mb-2 uppercase">Useful Link</h4>
+          <h4 className="font-semibold mb-2 uppercase">{texts.address.usefullinks}</h4>
           <ul className="space-y-1">
-            <li>Home</li>
-            <li>About us</li>
-            <li>Contact us</li>
-            <li>Booking</li>
+            <li>{texts.navbar.home}</li>
+            <li>{texts.navbar.about}</li>
+            <li>{texts.navbar.contact}</li>
+            <li>{texts.navbar.learnMore}</li>
           </ul>
         </div>
 
         {/* Address Section with Map */}
         <div className="col-span-2 md:w-1/3">
-          <h4 className="font-semibold mb-2 uppercase">Address</h4>
+          <h4 className="font-semibold mb-2 uppercase">{texts.address.heading}</h4>
           <img
             src={Map}
             alt="Map"

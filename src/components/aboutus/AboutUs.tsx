@@ -1,6 +1,10 @@
 import FamilyImage from '../../assets/family_image.png';
+import {  useContext } from "react";
+import { LanguageContext } from "../../locales/LanguageContext";
 
 export default function AboutUs() {
+
+  const { texts } = useContext(LanguageContext);
   return (
     <section id='about-us' className="bg-white">
       {/* Content Section - Centered Container */}
@@ -9,12 +13,12 @@ export default function AboutUs() {
           {/* About Us Section - Centered Content */}
           <div className="mb-12 md:mb-16 text-center">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 uppercase tracking-wider mb-6 md:mb-8">
-              ABOUT US
+              {texts.aboutUs.heading}
             </h2>
             
             <div className="text-gray-700 text-base sm:text-lg leading-relaxed space-y-4 mx-auto max-w-3xl">
               <p className="text-left">
-                Hashim consultancy provides psychological and social support, focusing on trauma recovery, depression, abuse, and other mental health concerns. Our call center serves as a lifeline for those in need, offering professional guidance and a compassionate ear.
+                {texts.aboutUs.content}
               </p>
             </div>
           </div>
@@ -39,12 +43,12 @@ export default function AboutUs() {
                 {/* Mission Heading with Lines */}
                 <div className="flex items-center mb-4 md:mb-6 w-full">
                   <div className="h-px bg-gray-300 flex-1"></div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 uppercase px-3 sm:px-4">MISSION</h3>
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 uppercase px-3 sm:px-4">{texts.aboutUs.missionheading}</h3>
                   <div className="h-px bg-gray-300 flex-1"></div>
                 </div>
                 
                 <p className="text-gray-700 text-base sm:text-lg leading-relaxed">
-                  Our mission is to provide accessible, compassionate, and confidential mental health support through our dedicated call center services. We aim to empower individuals by offering immediate guidance, emotional support, and professional consultation—anytime, anywhere. Through compassionate care, we strive to promote mental well-being and prioritize help as it is within reach.
+                  {texts.aboutUs.missioncontent}
                 </p>
               </div>
             </div>
