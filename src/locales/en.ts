@@ -56,7 +56,7 @@ buttons: {
   cancel: "Cancel",
   contunue: "Continue",
   confirm: "Confirm",
-  back: "bacl"
+  back: "back"
 },
 video: {
   heading: "Discover Web Hashim Consultancy",

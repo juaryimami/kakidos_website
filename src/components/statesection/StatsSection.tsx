@@ -1,7 +1,6 @@
 import { useState, ChangeEvent, useContext, MouseEvent } from "react";
 import { LanguageContext } from "../../locales/LanguageContext";
 import jsPDF from "jspdf";
-import emailjs from "@emailjs/browser";
 
 interface FormData {
   callType: "anonymous" | "disclosed";
@@ -12,10 +11,19 @@ interface FormData {
   email: string;
   created: string;
   price: number;
-  receipt: File | null;
+  receiptBase64: string | null;
+  receiptName: string | null; // Store original file name
+  receiptType: string | null; // Store original file MIME type
   confirmed: boolean;
   orderStatus: string | null;
   rejectionReason: string | null;
+}
+
+interface ApiResponse {
+  success: boolean;
+  message: string;
+  emailId?: string;
+  error?: string;
 }
 
 export default function StatsSection() {
@@ -32,19 +40,23 @@ export default function StatsSection() {
     email: "",
     created: new Date().toISOString(),
     price: 0,
-    receipt: null,
+    receiptBase64: null,
+    receiptName: null,
+    receiptType: null,
     confirmed: false,
     orderStatus: "pending",
     rejectionReason: null,
   });
   const [invalidFields, setInvalidFields] = useState<string[]>([]);
+  const [isSending, setIsSending] = useState<boolean>(false);
 
   const validateForm = (): boolean => {
     const errors: string[] = [];
-    const { callType, startTime, endTime, userId, email } = formData;
+    const { callType, price, startTime, endTime, userId, email } = formData;
 
     if (!startTime) errors.push("startTime");
     if (!endTime) errors.push("endTime");
+    if (!price) errors.push("price");
 
     if (callType === "anonymous" && !userId) {
       errors.push("userId");
@@ -69,7 +81,25 @@ export default function StatsSection() {
       if (start && end && end > start) {
         const duration = (end.getTime() - start.getTime()) / (1000 * 60);
         updatedData.duration = duration.toString();
-        updatedData.price = duration * 0.5;
+
+        if (duration <= 30) {
+          updatedData.price = 5;
+        } else if (duration <= 60) {
+          updatedData.price = 10;
+        } else if (duration <= 90) {
+          updatedData.price = 15;
+        } else if (duration <= 120) {
+          updatedData.price = 20;
+        } else if (duration <= 150) {
+          updatedData.price = 25;
+        } else if (duration <= 180) {
+          updatedData.price = 30;
+        } else {
+          updatedData.price = 0;
+          alert("Duration exceeds 180 minutes. Please select a time below 180 minutes.");
+        }
+      } else {
+        updatedData.price = 0;
       }
     }
 
@@ -79,9 +109,31 @@ export default function StatsSection() {
     }
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (err) => reject(err);
+    });
+  };
+
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setFormData({ ...formData, receipt: e.target.files[0] });
+      const file = e.target.files[0];
+      const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+      const MAX_FILE_SIZE = 5 * 1024 * 1024;
+      if (!allowedTypes.includes(file.type)) {
+        alert("Only JPEG, PNG, PDF are allowed");
+        return;
+      }
+      if (file.size > MAX_FILE_SIZE) {
+        alert("File must be under 5MB");
+        return;
+      }
+      const base64 = await fileToBase64(file);
+      setFormData({ ...formData, receiptBase64: base64, receiptName: file.name, receiptType: file.type });
+      console.log("Form Data after file change:", { ...formData, receiptBase64: base64, receiptName: file.name, receiptType: file.type });
     }
   };
 
@@ -91,7 +143,8 @@ export default function StatsSection() {
 
   const handleContinue = () => {
     if (validateForm()) {
-      localStorage.setItem("formData", JSON.stringify(formData));
+      const { receiptBase64, receiptName, receiptType, ...nonFileData } = formData;
+      localStorage.setItem("formData", JSON.stringify(nonFileData));
       setStep(2);
     }
   };
@@ -102,7 +155,6 @@ export default function StatsSection() {
 
   const handleCancel = () => {
     localStorage.clear();
-    console.log("localStorage cleared:", localStorage.length === 0);
     setFormData({
       callType: "anonymous",
       startTime: "",
@@ -112,7 +164,9 @@ export default function StatsSection() {
       email: "",
       created: new Date().toISOString(),
       price: 0,
-      receipt: null,
+      receiptBase64: null,
+      receiptName: null,
+      receiptType: null,
       confirmed: false,
       orderStatus: "pending",
       rejectionReason: null,
@@ -122,53 +176,55 @@ export default function StatsSection() {
   };
 
   const handleConfirmOrder = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsSending(true);
     const orderId = `ORD-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
-    console.log(e);
-    const storedData: FormData = JSON.parse(localStorage.getItem("formData") || "{}");
-
-    const emailParams = {
-      order_id: orderId, // Match template placeholder
-      call_type: storedData.callType, // Match template placeholder
-      start_time: storedData.startTime, // Match template implied structure
-      end_time: storedData.endTime, // Match template implied structure
-      duration: storedData.duration, // Already matches
-      user_id: storedData.userId, // Match template placeholder
-      client_email: storedData.callType === "disclosed" ? storedData.email : "", // Match template placeholder
-      created: storedData.created, // Match template implied structure
-      price: storedData.price.toFixed(2), // Already matches
-      email: "booking@hashimconsultancy.org", // Recipient email
-    };
+    const storedData: Omit<FormData, "receiptBase64" | "receiptName" | "receiptType"> = JSON.parse(localStorage.getItem("formData") || "{}");
 
     try {
-      const response = await emailjs.send(
-        "service_6suamgo",
-        "template_vcm7x1t",
-        emailParams,
-        "9FJX91r2UM2mbNwoW"
-      );
-      console.log("Email sent successfully", {
-        recipient: emailParams.email,
-        response: response,
-        params: emailParams,
-      });
+      // Prepare attachment data directly from current formData
+      let attachmentData = {};
+      if (formData.receiptBase64) {
+        console.log("Attachment Base64:", formData.receiptBase64); // Debug
+        attachmentData = {
+          attachment: formData.receiptBase64.split(',')[1], // Extract base64 data
+          attachmentName: formData.receiptName || `order_${orderId}.${formData.receiptType?.split('/')[1] || 'bin'}`, // Use original name or fallback
+          attachmentType: formData.receiptType || "application/octet-stream", // Use original type or default
+        };
+      }
 
-      const bookingData = {
+      // Construct payload using stored non-file data and current file data
+      const payload = {
         orderId,
         callType: storedData.callType,
         startTime: storedData.startTime,
         endTime: storedData.endTime,
         duration: storedData.duration,
         userId: storedData.userId,
-        userEmail: storedData.email,
-        created: storedData.created,
+        userEmail: storedData.callType === "disclosed" ? storedData.email : "anonymous@example.com",
         price: storedData.price,
-        confirmed: storedData.confirmed,
         orderStatus: storedData.orderStatus,
         rejectionReason: storedData.rejectionReason,
+        ...attachmentData,
       };
+      console.log("Payload:", payload); // Debug
 
-      console.log("Booking data for potential API:", bookingData);
+      // Send to your backend
+      const response = await fetch('https://booking-sender.onrender.com/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
 
+      const result: ApiResponse = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to send booking confirmation');
+      }
+
+      // Generate PDF receipt
       const doc = new jsPDF();
       doc.setFontSize(12);
       doc.text("Hashim Consultancy", 20, 20);
@@ -181,8 +237,8 @@ export default function StatsSection() {
       doc.setFontSize(12);
       doc.text(`Order ID: ${orderId}`, 20, 60);
       doc.text(`Call Type: ${storedData.callType}`, 20, 70);
-      doc.text(`Start Time: ${storedData.startTime}`, 20, 80);
-      doc.text(`End Time: ${storedData.endTime}`, 20, 90);
+      doc.text(`Start: ${storedData.startTime}`, 20, 80);
+      doc.text(`End: ${storedData.endTime}`, 20, 90);
       doc.text(`Duration: ${storedData.duration} minutes`, 20, 100);
       if (storedData.callType === "disclosed") {
         doc.text(`User ID: ${storedData.userId}`, 20, 110);
@@ -190,29 +246,24 @@ export default function StatsSection() {
       }
       doc.text(`Created: ${storedData.created}`, 20, 130);
       doc.text(`Price: $${storedData.price.toFixed(2)}`, 20, 140);
-      doc.text(`Order Status: ${storedData.orderStatus || 'N/A'}`, 20, 150);
-      doc.text(`Rejection Reason: ${storedData.rejectionReason || 'N/A'}`, 20, 160);
-
+      doc.text(`Order Status: ${storedData.orderStatus || "N/A"}`, 20, 150);
+      if (formData.receiptBase64) {
+        doc.text(`Attachment: ${formData.receiptName || `order_${orderId}.${formData.receiptType?.split('/')[1] || 'bin'}`}`, 20, 160);
+      }
       doc.setFontSize(10);
       doc.text("Hashim Consultancy", 20, 280);
       doc.text("Email: info@hashimconsultancy.org", 20, 286);
       doc.text("Phone: +251-123-456-789", 20, 292);
-
       doc.save(`order_${orderId}.pdf`);
 
       localStorage.clear();
-      console.log("localStorage cleared after email send:", localStorage.length === 0);
-
-      alert(`Order Confirmed! Order ID: ${orderId}`);
-      setIsPopupOpen(false);
-      setStep(1);
-    } catch (error: any) {
-      console.error("Failed to process order:", {
-        error: error.text || error.message || error,
-        params: emailParams,
-      });
-      alert(`Failed to process order: ${error.text || error.message || "Unknown error"}`);
-      return;
+      alert(`Order Confirmed! Order ID: ${orderId}\n${result.message}`);
+      handleCancel();
+    } catch (err: any) {
+      console.error('Booking error:', err);
+      alert(`Error: ${err.message}`);
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -244,149 +295,149 @@ export default function StatsSection() {
           <div className="bg-gradient-to-r from-gray-800 via-gray-700 to-[#72b3c5] rounded-lg p-6 w-full max-w-4xl h-[80vh] overflow-y-auto shadow-lg my-8">
             <div className="flex-1 overflow-y-auto flex flex-col md:flex-row">
               {step === 1 && (
-                <div className="w-full md:w-1/2 p-4 bg-white rounded-lg m-2 min-h-0">
-                  <h3 className="text-xl font-bold mb-4 text-gray-800">{texts.registration_steps.heading}</h3>
-                  <ol className="list-decimal pl-5 space-y-2 text-gray-700">
-                    <li>{texts.registration_steps.step1}</li>
-                    <li>{texts.registration_steps.step2}</li>
-                    <li>
-                      {texts.registration_steps.step3}
-                      <ul className="list-disc pl-8 space-y-1 text-gray-700 mt-1">
-                        <li>{texts.registration_steps.step3_1}</li>
-                        <li dangerouslySetInnerHTML={{ __html: texts.registration_steps.step3_2 }} />
-                      </ul>
-                    </li>
-                    <li>{texts.registration_steps.step4}</li>
-                    <li>{texts.registration_steps.step5}</li>
-                    <li>{texts.registration_steps.step6}</li>
-                  </ol>
-                  <p
-                    className="mt-4 text-sm bg-gray-50 border border-gray-300 p-3 rounded-md text-gray-700 italic"
-                    dangerouslySetInnerHTML={{ __html: texts.registration_steps.note }}
-                  />
-                </div>
-              )}
+                <>
+                  <div className="w-full md:w-1/2 p-4 bg-white rounded-lg m-2 min-h-0">
+                    <h3 className="text-xl font-bold mb-4 text-gray-800">{texts.registration_steps.heading}</h3>
+                    <ol className="list-decimal pl-5 space-y-2 text-gray-700">
+                      <li>{texts.registration_steps.step1}</li>
+                      <li>{texts.registration_steps.step2}</li>
+                      <li>
+                        {texts.registration_steps.step3}
+                        <ul className="list-disc pl-8 space-y-1 text-gray-700 mt-1">
+                          <li>{texts.registration_steps.step3_1}</li>
+                          <li dangerouslySetInnerHTML={{ __html: texts.registration_steps.step3_2 }} />
+                        </ul>
+                      </li>
+                      <li>{texts.registration_steps.step4}</li>
+                      <li>{texts.registration_steps.step5}</li>
+                      <li>{texts.registration_steps.step6}</li>
+                    </ol>
+                    <p
+                      className="mt-4 text-sm bg-gray-50 border border-gray-300 p-3 rounded-md text-gray-700 italic"
+                      dangerouslySetInnerHTML={{ __html: texts.registration_steps.note }}
+                    />
+                  </div>
 
-              {step === 1 && (
-                <div className="w-full md:w-1/2 p-4 bg-white rounded-lg m-2 min-h-0">
-                  <h3 className="text-xl font-bold mb-4 text-gray-800">{texts.registration_form.heading}</h3>
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">{texts.registration_form.calltype}</label>
-                        <select
-                          name="callType"
-                          value={formData.callType}
-                          onChange={handleInputChange}
-                          className="w-full p-2 border rounded text-gray-700"
-                        >
-                          <option value="anonymous">Anonymous</option>
-                          <option value="disclosed">Disclosed</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">{texts.registration_form.starttime}</label>
-                        <input
-                          type="datetime-local"
-                          name="startTime"
-                          value={formData.startTime}
-                          onChange={handleInputChange}
-                          className={`w-full p-2 border rounded text-gray-700 ${
-                            invalidFields.includes("startTime") ? "border-red-500" : ""
-                          }`}
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">{texts.registration_form.endtime}</label>
-                        <input
-                          type="datetime-local"
-                          name="endTime"
-                          value={formData.endTime}
-                          onChange={handleInputChange}
-                          className={`w-full p-2 border rounded text-gray-700 ${
-                            invalidFields.includes("endTime") ? "border-red-500" : ""
-                          }`}
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">{texts.registration_form.duration}</label>
-                        <input
-                          type="text"
-                          value={formData.duration ? `${formData.duration} minutes` : ""}
-                          readOnly
-                          className="w-full p-2 border rounded bg-gray-100 text-gray-700"
-                        />
-                      </div>
-
-                      {formData.callType === "anonymous" && (
+                  <div className="w-full md:w-1/2 p-4 bg-white rounded-lg m-2 min-h-0">
+                    <h3 className="text-xl font-bold mb-4 text-gray-800">{texts.registration_form.heading}</h3>
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                      <div className="space-y-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700">{texts.registration_form.user_id}</label>
+                          <label className="block text-sm font-medium text-gray-700">{texts.registration_form.calltype}</label>
+                          <select
+                            name="callType"
+                            value={formData.callType}
+                            onChange={handleInputChange}
+                            className="w-full p-2 border rounded text-gray-700"
+                          >
+                            <option value="anonymous">Anonymous</option>
+                            <option value="disclosed">Disclosed</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">{texts.registration_form.starttime}</label>
+                          <input
+                            type="datetime-local"
+                            name="startTime"
+                            value={formData.startTime}
+                            onChange={handleInputChange}
+                            className={`w-full p-2 border rounded text-gray-700 ${
+                              invalidFields.includes("startTime") ? "border-red-500" : ""
+                            }`}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">{texts.registration_form.endtime}</label>
+                          <input
+                            type="datetime-local"
+                            name="endTime"
+                            value={formData.endTime}
+                            onChange={handleInputChange}
+                            className={`w-full p-2 border rounded text-gray-700 ${
+                              invalidFields.includes("endTime") ? "border-red-500" : ""
+                            }`}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">{texts.registration_form.duration}</label>
                           <input
                             type="text"
-                            name="userId"
-                            value={formData.userId}
-                            onChange={handleInputChange}
-                            className={`w-full p-2 border rounded text-gray-700 ${
-                              invalidFields.includes("userId") ? "border-red-500" : ""
-                            }`}
+                            value={formData.duration ? `${formData.duration} minutes` : ""}
+                            readOnly
+                            className="w-full p-2 border rounded bg-gray-100 text-gray-700"
                           />
                         </div>
-                      )}
 
-                      {formData.callType === "disclosed" && (
+                        {formData.callType === "anonymous" && (
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700">{texts.registration_form.user_id}</label>
+                            <input
+                              type="text"
+                              name="userId"
+                              value={formData.userId}
+                              onChange={handleInputChange}
+                              className={`w-full p-2 border rounded text-gray-700 ${
+                                invalidFields.includes("userId") ? "border-red-500" : ""
+                              }`}
+                            />
+                          </div>
+                        )}
+
+                        {formData.callType === "disclosed" && (
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700">Email</label>
+                            <input
+                              type="email"
+                              name="email"
+                              value={formData.email}
+                              onChange={handleInputChange}
+                              className={`w-full p-2 border rounded text-gray-700 ${
+                                invalidFields.includes("email") ? "border-red-500" : ""
+                              }`}
+                            />
+                          </div>
+                        )}
+
                         <div>
-                          <label className="block text-sm font-medium text-gray-700">Email</label>
+                          <label className="block text-sm font-medium text-gray-700">{texts.registration_form.createdat}</label>
                           <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            className={`w-full p-2 border rounded text-gray-700 ${
-                              invalidFields.includes("email") ? "border-red-500" : ""
-                            }`}
+                            type="text"
+                            value={formData.created}
+                            readOnly
+                            className="w-full p-2 border rounded bg-gray-100 text-gray-700"
                           />
                         </div>
-                      )}
 
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">{texts.registration_form.createdat}</label>
-                        <input
-                          type="text"
-                          value={formData.created}
-                          readOnly
-                          className="w-full p-2 border rounded bg-gray-100 text-gray-700"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">{texts.registration_form.price}</label>
-                        <input
-                          type="text"
-                          value={formData.price ? `$${formData.price.toFixed(2)}` : ""}
-                          readOnly
-                          className="w-full p-2 border rounded bg-gray-100 text-gray-700"
-                        />
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700">{texts.registration_form.price}</label>
+                          <input
+                            type="text"
+                            value={formData.price ? `$${formData.price.toFixed(2)}` : ""}
+                            readOnly
+                            className="w-full p-2 border rounded bg-gray-100 text-gray-700"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="flex space-x-4 mt-4">
-                    <button
-                      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                      onClick={handleCancel}
-                    >
-                      {texts.buttons.cancel}
-                    </button>
-                    <button
-                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                      onClick={handleContinue}
-                    >
-                      {texts.buttons.contunue}
-                    </button>
+                    <div className="flex space-x-4 mt-4">
+                      <button
+                        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                        onClick={handleCancel}
+                      >
+                        {texts.buttons.cancel}
+                      </button>
+                      <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                        onClick={handleContinue}
+                      >
+                        {texts.buttons.contunue}
+                      </button>
+                    </div>
                   </div>
-                </div>
+                </>
               )}
 
               {step === 2 && (
@@ -399,27 +450,30 @@ export default function StatsSection() {
                       <p><strong>{texts.registration_form.endtime}:</strong> {formData.endTime}</p>
                       <p><strong>{texts.registration_form.duration}:</strong> {formData.duration} {texts.review.minuts}</p>
                       {formData.callType === "anonymous" && (
-                        <>
-                          <p><strong>{texts.registration_form.user_id}:</strong> {formData.userId}</p>
-                        </>
+                        <p><strong>{texts.registration_form.user_id}:</strong> {formData.userId}</p>
                       )}
                       {formData.callType === "disclosed" && (
-                        <>
-                          <p><strong>Email:</strong> {formData.email}</p>
-                        </>
+                        <p><strong>Email:</strong> {formData.email}</p>
                       )}
                       <p><strong>{texts.registration_form.createdat}:</strong> {formData.created}</p>
                       <p><strong>{texts.registration_form.price}:</strong> ${formData.price.toFixed(2)}</p>
-                    
                     </div>
 
                     <div className="mt-4">
-                      <label className="block text-sm font-medium text-gray-700">{texts.review.uploadreciept}</label>
+                      <label className="block text-sm font-medium text-gray-700">
+                        {texts.review.uploadreciept} (JPEG, PNG, PDF, max 5MB)
+                      </label>
                       <input
                         type="file"
                         onChange={handleFileChange}
+                        accept=".jpg,.jpeg,.png,.pdf"
                         className="w-full p-2 border rounded text-gray-700"
                       />
+                      {formData.receiptBase64 && (
+                        <p className="text-sm text-green-600 mt-1">
+                          File selected: {formData.receiptName || "uploaded_file"}
+                        </p>
+                      )}
                     </div>
 
                     <div className="mt-4">
@@ -448,11 +502,15 @@ export default function StatsSection() {
                         {texts.buttons.cancel}
                       </button>
                       <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                        className={`px-4 py-2 rounded text-white ${
+                          (!formData.receiptBase64 || !formData.confirmed || isSending)
+                            ? "bg-blue-300 cursor-not-allowed"
+                            : "bg-blue-500 hover:bg-blue-600"
+                        }`}
                         onClick={handleConfirmOrder}
-                        disabled={!formData.receipt || !formData.confirmed}
+                        disabled={!formData.receiptBase64 || !formData.confirmed || isSending}
                       >
-                        {texts.buttons.confirm}
+                        {isSending ? "Sending..." : texts.buttons.confirm}
                       </button>
                     </div>
                   </div>

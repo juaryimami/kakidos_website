@@ -1,6 +1,7 @@
 import React from 'react';
 import {  useContext } from "react";
 import { LanguageContext } from "../../locales/LanguageContext";
+import video from '../../assets/video5974259578425056227.mp4';
 
 interface VideoSectionProps {
   videoUrl?: string;
@@ -10,7 +11,7 @@ interface VideoSectionProps {
 }
 
 const VideoSection: React.FC<VideoSectionProps> = ({
-  videoUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ', // Default to a sample YouTube video
+  
   }) => {
 
   const { texts } = useContext(LanguageContext);
@@ -43,7 +44,7 @@ const VideoSection: React.FC<VideoSectionProps> = ({
             <div className="relative pb-[56.25%] h-0">
               <iframe
                 className="absolute top-0 left-0 w-full h-full rounded-lg shadow-lg"
-                src={videoUrl}
+                src={video}
                 title="Web Hashim Consultancy Promotional Video"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
